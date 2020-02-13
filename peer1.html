@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+
+<title>Node -- Lamport Mutual Exclusion algorithm</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<script src="https://cdn.jsdelivr.net/npm/peerjs@0.3.20/dist/peer.min.js"></script>
+
+<script type="text/javascript">
+
+var my_id;
+var clock = 0;             /* Lamport logical clock */
+var queue = new Array();   /* incoming requests */
+var resource_busy = false; /* is it available?  */
+var connection;  
+var peer            /* we need it globally for the button, etc */
+
+/* Need to run on site load */
+window.onload = function() {
+  /* connect with the server */
+  //var peer = new Peer({key: '5bk60iq1kgvcayvi', debug: 3});
+  peer = new Peer('idHuges'); 
+  console.log('oiiiiiii',peer)
+  peer.on('open', function(id) {
+  console.log('Meu ID: ' + id);
+});
+
+
+connection = peer.connect('idElvis');
+
+peer.on('connection', function(conn) {
+  conn.on('open', function() {
+  // Receive messages
+  conn.on('data', function(data) {
+    console.log('Received', data);
+  });  
+});
+});
+ 
+}
+function enviarMsg() {
+console.log('enviar msg')
+  var x = document.getElementById("myText").value;
+  var connection = peer.connect('idElvis');
+  
+  connection.on('open', function() {
+     // Send messages
+  connection.send(x);
+});
+}
+/*
+ * Removes the request from the global priotity queue
+ */
+
+
+</script>
+</head>
+
+<body>
+
+  <input type="button" value="Acessar recurso" onclick="requestrequest();"/> </br></br>
+  <input type="text" id="myText" value="Some text...">
+  <button onclick="enviarMsg()">Enviar</button>
+  <div id="logscontainer" style="width:500px;"></div>
+</body>
+</html>
