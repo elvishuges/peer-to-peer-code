@@ -5,6 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="Content-Language" content="en-us">
 <script src="https://cdn.jsdelivr.net/npm/peerjs@0.3.20/dist/peer.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+
 
 <script type="text/javascript">
 
@@ -26,27 +28,28 @@ window.onload = function() {
 });
 
 
-
-
-
 peer.on('connection', function(conn) {
   conn.on('open', function() {
   // Receive messages
   conn.on('data', function(data) {
     console.log('Received', data);
-  });
-  
+	$("#list").append('<li><a href="#">'+ data +'</a></li>');
+  });  
 });
 });
+
  
 }
 
 function enviarMsg() {
 console.log('enviar msg')
   var x = document.getElementById("myText").value;  
+  document.getElementById("myText").value = ''
+   
   connection = peer.connect('idHuges');
   connection.on('open', function() {  
   // Send messages
+  $("#list").append('<li><a href="#">'+ x +'</a></li>');
   connection.send(x);
 });
 }
@@ -59,10 +62,11 @@ console.log('enviar msg')
 </head>
 
 <body>
-
-  <input type="button" value="Acessar recurso" onclick="requestrequest();"/> </br></br>
-  <input type="text" id="myText" value="Some text...">
-  <button onclick="enviarMsg()">Enviar</button>
+	<ul id='list'>		
+   </ul>
+  
+  <input type="text" id="myText">
+  <button id="add" onclick="enviarMsg()">Enviar</button>
   <div id="logscontainer" style="width:500px;"></div>
 </body>
 </html>
